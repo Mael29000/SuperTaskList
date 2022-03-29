@@ -40,8 +40,7 @@ const months: String[] = [
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingTop: 10,
   },
   date: {
     fontSize: 30,
