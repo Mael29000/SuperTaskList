@@ -1,2 +1,2 @@
 # SuperTaskList
-Udemy react-native course. Mini project for practice purpose.
+Udemy react-native course.
