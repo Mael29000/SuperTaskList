@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import Counter from "../../components/Counter";
 import FloatingBtn from "../../components/FloatingBtn";
 import Header from "../../components/header";
 import Task from "../../model/Task";
 import TaskForm from "./TaskForm";
 import TaskTile from "./TaskTile";
+import { toggleTask, deleteTask } from "../../redux/actions";
+import { getTasks } from "../../redux/selectors";
 
 export default function TasksScreen() {
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: 1, title: "Hello World", isCompleted: false },
-    { id: 2, title: "Titre stylé !", isCompleted: true },
-  ]);
+  const tasks = useSelector(getTasks);
+  const dispatch = useDispatch();
 
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
 
@@ -25,23 +26,12 @@ export default function TasksScreen() {
     );
   };
 
-  const onAddTask = (title: string) => {
-    setTasks([...tasks, { id: Date.now(), title: title, isCompleted: false }]);
-  };
-
   const onDeleteTask = (id: number) => {
-    setTasks(tasks.filter((task: Task) => task.id !== id));
+    dispatch(deleteTask(id));
   };
 
   const onUpdateTask = (id: number) => {
-    let newTasks: Task[] = [];
-    tasks.forEach((task) => {
-      if (task.id === id) {
-        task.isCompleted = !task.isCompleted;
-      }
-      newTasks.push(task);
-    });
-    setTasks(newTasks);
+    dispatch(toggleTask(id));
   };
 
   const toggleForm = () => {
@@ -51,7 +41,7 @@ export default function TasksScreen() {
   return (
     <View style={styles.container}>
       <Header />
-      {isFormVisible ? <TaskForm onAddTask={onAddTask} /> : null}
+      {isFormVisible ? <TaskForm /> : null}
       <Counter
         taskCompleted={tasks.filter((task: Task) => task.isCompleted).length}
         taskTotal={tasks.length}

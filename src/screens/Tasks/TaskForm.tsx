@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { TextInput, Text, StyleSheet, View, Button } from "react-native";
+import { TextInput, StyleSheet, View, Button } from "react-native";
+import { useDispatch } from "react-redux";
+import { addTask } from "../../redux/actions";
 
-export default function TaskForm({ onAddTask }: any) {
+export default function TaskForm() {
+  const dispatch = useDispatch();
   const [text, setText] = useState<string>("");
   const onChangeText = (text: string) => setText(text);
   const onAddNewTask = () => {
     if (text.trim() !== "") {
-      onAddTask(text);
+      dispatch(addTask(text));
       setText("");
     }
   };
